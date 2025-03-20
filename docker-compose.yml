@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/admin-dashboard
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - data:/data/db
+    logging:
+      driver: none
+volumes:
+  data:
+    driver: local

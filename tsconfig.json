@@ -1,0 +1,11 @@
+{
+  "references": [
+    { "path": "./server/tsconfig.json" },
+    { "path": "./frontend/tsconfig.json" }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "typeRoots": ["./node_modules/@types", "@types"]
+  },
+  "include": ["@types/**/*.d.ts"]
+}
