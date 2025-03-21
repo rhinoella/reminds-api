@@ -1,19 +1,5 @@
 version: "3.8"
 services:
-  server:
-    build: ./server
-    ports:
-      - "5000:5000"
-    environment:
-      MONGO_URI: mongodb://mongo:27017/admin-dashboard
-    depends_on:
-      - mongo
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-
   mongo:
     image: mongo
     ports:
