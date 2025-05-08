@@ -7,18 +7,43 @@ import { createDefaults } from "./createDefaults";
 
 dotenv.config();
 
-connectToDatabase().then(async () => {
-  const user = await User.create({
-    username: "admin",
-    password: process.env.SEED_PASSWORD,
-  });
+async function seed() {
+  try {
+    await connectToDatabase();
 
-  const trial = await Trial.create({
-    name: "Test Trial",
-    description: "Test Description",
-  });
+    // Check if admin user exists
+    let user = await User.findOne({ username: "admin" });
+    if (!user) {
+      user = await User.create({
+        username: "admin",
+        password: process.env.SEED_PASSWORD,
+      });
+      console.log("Admin user created");
+    } else {
+      console.log("Admin user already exists");
+    }
 
-  await createDefaults(trial._id as ObjectId);
+    // Check if test trial exists
+    let trial = await Trial.findOne({ name: "Test Trial" });
+    if (!trial) {
+      trial = await Trial.create({
+        name: "Test Trial",
+        description: "Test Description",
+      });
+      console.log("Test trial created");
 
-  console.log("Seed completed");
-});
+      await createDefaults(trial._id as ObjectId);
+      console.log("Default data created for trial");
+    } else {
+      console.log("Test trial already exists");
+    }
+
+    console.log("Seed completed successfully");
+    process.exit(0);
+  } catch (error) {
+    console.error("Seed failed:", error);
+    process.exit(1);
+  }
+}
+
+seed();

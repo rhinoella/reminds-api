@@ -27,28 +27,19 @@ const LoginPage: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
+  const handleSubmit = async () => {
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const data = await api.post<
+        { username: string; password: string },
+        { token: string }
+      >("/login", {
+        data: {
+          username,
+          password,
         },
-        body: JSON.stringify({
-          username: formData.get("username"),
-          password: formData.get("password"),
-        }),
       });
 
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      login(data.token); // This will automatically redirect to /devices
+      login(data.token);
     } catch (error) {
       console.error("Login error:", error);
       // Handle login error (show error message to user)
@@ -81,9 +72,7 @@ const LoginPage: React.FC = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" form="login-form" onClick={() => handleSubmit}>
-            Login
-          </Button>
+          <Button onClick={() => handleSubmit()}>Login</Button>
         </CardFooter>
       </Card>
     </div>

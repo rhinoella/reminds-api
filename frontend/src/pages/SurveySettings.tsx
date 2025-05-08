@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2, Plus } from "lucide-react";
-import { useParams } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
 import { api } from "@/lib/api";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +26,6 @@ const SurveySettings: React.FC = () => {
     videoLink: "",
   });
   const { token } = useAuth();
-  const { trialId } = useParams();
 
   useEffect(() => {
     fetchSurvey();
@@ -35,7 +33,7 @@ const SurveySettings: React.FC = () => {
 
   const fetchSurvey = async () => {
     try {
-      const data = await api.get<Survey>(`/survey/${trialId}`, {
+      const data = await api.get<Survey>(`/survey`, {
         token: token || undefined,
       });
       setSurvey(data);
@@ -88,7 +86,7 @@ const SurveySettings: React.FC = () => {
 
   const handleSaveSurvey = async () => {
     try {
-      await api.put(`/survey/${trialId}`, {
+      await api.put(`/survey`, {
         data: survey,
         token: token || undefined,
       });

@@ -10,7 +10,6 @@ const surveyQuestionResponseSchema = new Schema<SurveyQuestionResponse>({
 });
 
 const surveyResponseSchema = new Schema<SurveyResponseDocument>({
-  trialId: { type: Schema.Types.ObjectId, ref: "Trial", required: true },
   surveyId: { type: String, required: true },
   responseData: { type: [surveyQuestionResponseSchema], required: true },
   createdAt: { type: Date, default: Date.now },

@@ -7,6 +7,7 @@ import {
   Building2,
   Tablet,
   LogOut,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -18,6 +19,12 @@ const menuItems = [
     items: [
       { name: "Dashboard", icon: LayoutDashboard, path: "/", useParams: true },
       { name: "Survey", icon: FileText, path: "survey", useParams: true },
+      {
+        name: "Responses",
+        icon: ClipboardList,
+        path: "responses",
+        useParams: true,
+      },
       { name: "Devices", icon: Tablet, path: "devices", useParams: true },
       {
         name: "Configuration",

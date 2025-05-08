@@ -6,7 +6,6 @@ import { TrialDocument } from "@reminds/server";
 import { useAuth } from "@/components/AuthProvider";
 
 export function TrialRoutes() {
-  const { trialId } = useParams();
   const [trial, setTrial] = useState<TrialDocument | null>(null);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();

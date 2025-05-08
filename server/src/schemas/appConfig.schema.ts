@@ -2,7 +2,6 @@ import { AppConfigDocument } from "../types/appConfig.type";
 import { model, Schema } from "mongoose";
 
 const appConfigSchema = new Schema<AppConfigDocument>({
-  trialId: { type: Schema.Types.ObjectId, ref: "Trial", required: true },
   project: { type: String, required: true },
   subscribeQos: { type: Number, required: true },
   publishQos: { type: Number, required: true },

@@ -14,10 +14,8 @@ import { api } from "@/lib/api";
 import { AppConfig, MqttQos } from "@reminds/server";
 import { Check, CircleCheck, Save, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 export default function ConfigSettings() {
-  const { trialId } = useParams();
   const [config, setConfig] = useState<AppConfig | null>(null);
   const { token } = useAuth();
   const [submissionState, setSubmissionState] = useState<"idle" | "success">(
@@ -26,14 +24,14 @@ export default function ConfigSettings() {
 
   useEffect(() => {
     const fetchConfig = async () => {
-      const config = await api.get<AppConfig>(`/config/${trialId}`, {
+      const config = await api.get<AppConfig>(`/config`, {
         token: token || undefined,
       });
       setConfig(config);
     };
 
     fetchConfig();
-  }, [trialId]);
+  }, []);
 
   const handleSave = async () => {
     if (!config) {
@@ -41,7 +39,7 @@ export default function ConfigSettings() {
     }
 
     try {
-      await api.put<AppConfig, AppConfig>(`/config/${trialId}`, {
+      await api.put<AppConfig, AppConfig>(`/config`, {
         data: config,
         token: token || undefined,
       });
@@ -55,7 +53,7 @@ export default function ConfigSettings() {
     }
   };
   return (
-    <div className="flex flex-col justify-center items-center h-full w-full flex-1 mx-auto">
+    <div className="flex flex-col justify-center items-center h-full w-full flex-1 mx-auto pb-44">
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">

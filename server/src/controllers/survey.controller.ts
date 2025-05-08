@@ -4,16 +4,15 @@ import { ObjectId } from "mongodb";
 
 async function getSurvey(req: Request, res: Response) {
   try {
-    const survey = await Survey.findOne({
-      trialId: new ObjectId(req.params.trialId),
-    });
+    const survey = await Survey.findOne();
     if (!survey) {
       // Return empty survey if none exists
-      return res.json({
+      res.json({
         title: "",
         questions: [],
         videoLink: "",
       });
+      return;
     }
     res.json(survey);
   } catch (error) {
@@ -25,10 +24,9 @@ async function getSurvey(req: Request, res: Response) {
 async function updateSurvey(req: Request, res: Response) {
   try {
     const { title, questions, videoLink } = req.body;
-    const trialId = req.params.trialId;
 
     const survey = await Survey.findOneAndUpdate(
-      { trialId: new ObjectId(trialId) },
+      {},
       { title, questions, videoLink },
       { new: true, upsert: true }
     );

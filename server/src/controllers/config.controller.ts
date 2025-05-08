@@ -1,17 +1,21 @@
 import AppConfig from "../schemas/appConfig.schema";
 import { Request, Response } from "express";
+import Device from "../schemas/device.schema";
 
 async function getConfig(req: Request, res: Response) {
-  const config = await AppConfig.findOne({ trialId: req.params.trialId });
-  res.json(config);
+  const deviceId = req.query.deviceId as string;
+  const config = await AppConfig.findOne();
+
+  const device = await Device.findOne({ deviceId });
+
+  res.json({
+    ...config,
+    ...device,
+  });
 }
 
 async function updateConfig(req: Request, res: Response) {
-  const config = await AppConfig.findOneAndUpdate(
-    { trialId: req.params.trialId },
-    req.body,
-    { new: true }
-  );
+  const config = await AppConfig.findOneAndUpdate(req.body, { new: true });
   res.json(config);
 }
 

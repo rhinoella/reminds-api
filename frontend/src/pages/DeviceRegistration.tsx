@@ -64,11 +64,10 @@ function DeviceRegistration(): JSX.Element {
   const [devices, setDevices] = useState<DeviceDocument[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { token } = useAuth();
-  const { trialId } = useParams();
   const navigate = useNavigate();
 
   const fetchDevices = async () => {
-    const devices = await api.get<DeviceDocument[]>(`/devices/${trialId}`, {
+    const devices = await api.get<DeviceDocument[]>(`/devices`, {
       token: token || undefined,
     });
     setDevices(devices);
@@ -79,14 +78,14 @@ function DeviceRegistration(): JSX.Element {
   }, []);
 
   const handleDeleteDevice = async (deviceId: string) => {
-    await api.delete(`/devices/${trialId}/${deviceId}`, {
+    await api.delete(`/devices/${deviceId}`, {
       token: token || undefined,
     });
     fetchDevices();
   };
 
   const handleChangeStatus = async (deviceId: string, status: DeviceStatus) => {
-    await api.put(`/devices/${trialId}/${deviceId}`, {
+    await api.put(`/devices/${deviceId}`, {
       data: {
         status,
       },
@@ -100,7 +99,7 @@ function DeviceRegistration(): JSX.Element {
     sslCertificate: string,
     sslKey: string
   ) => {
-    await api.put(`/devices/${trialId}/${deviceId}`, {
+    await api.put(`/devices/${deviceId}`, {
       data: {
         sslCertificate,
         sslKey,
@@ -114,7 +113,7 @@ function DeviceRegistration(): JSX.Element {
     if (!device.deviceId || !device.deviceType) {
       return;
     }
-    await api.post(`/devices/${trialId}`, {
+    await api.post(`/devices`, {
       data: device,
       token: token || undefined,
     });
@@ -193,14 +192,11 @@ function DeviceRegistration(): JSX.Element {
                               </>
                             )}
                           </CommandItem>
-                          <CommandItem
-                            className="cursor-pointer"
-                            onSelect={() =>
-                              handleDeleteDevice(device._id!.toString())
-                            }
-                          >
-                            <Shield className="mr-2 h-4 w-4" />
-                            SSL
+                          <CommandItem className="cursor-pointer">
+                            <EditDevice
+                              handleEditDevice={handleEditDevice}
+                              device={device}
+                            />
                           </CommandItem>
                           <CommandItem
                             className="cursor-pointer"
@@ -300,6 +296,7 @@ function AddDevice({
           />
           <Label>SSL Certificate</Label>
           <Textarea
+            className="max-h-48 overflow-x-auto max-w-[450px] whitespace-nowrap"
             placeholder="SSL Certificate"
             value={device.sslCertificate}
             onChange={(e) =>
@@ -309,9 +306,11 @@ function AddDevice({
           />
           <Label>SSL Key</Label>
           <Textarea
+            className="max-h-48 overflow-x-auto max-w-[450px] whitespace-nowrap"
             placeholder="SSL Key"
             value={device.sslKey}
             onChange={(e) => setDevice({ ...device, sslKey: e.target.value })}
+            rows={10}
             required
           />
         </div>
@@ -329,13 +328,13 @@ function EditDevice({
   handleEditDevice,
   device,
 }: {
-  handleEditDevice: (editedDevice: {
-    sslKey: string;
-    sslCertificate: string;
-  }) => void;
+  handleEditDevice: (
+    deviceId: string,
+    sslKey: string,
+    sslCertificate: string
+  ) => void;
   device: DeviceDocument;
 }) {
-  const { trialId } = useParams();
   const [open, setOpen] = useState(false);
   const [editedDevice, setEditedDevice] = useState<{
     sslCertificate: string;
@@ -346,16 +345,21 @@ function EditDevice({
   });
 
   const handleSubmit = () => {
-    handleEditDevice(editedDevice);
+    handleEditDevice(
+      device.deviceId,
+      editedDevice.sslKey,
+      editedDevice.sslCertificate
+    );
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus size={16} />
-        </Button>
+        <div className="flex items-center gap-4">
+          <Shield className="h-4" />
+          SSL
+        </div>
       </DialogTrigger>
       <DialogContent className="space-y-2">
         <DialogHeader>
@@ -363,8 +367,8 @@ function EditDevice({
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <Label>SSL Certificate</Label>
-          <Input
-            type="text"
+          <Textarea
+            className="max-h-48 overflow-x-auto max-w-[450px] whitespace-nowrap"
             placeholder="SSL Certificate"
             value={editedDevice.sslCertificate}
             required
@@ -376,8 +380,8 @@ function EditDevice({
             }
           />
           <Label>SSL Key</Label>
-          <Input
-            type="text"
+          <Textarea
+            className="max-h-48 overflow-x-auto max-w-[450px] whitespace-nowrap"
             placeholder="SSL Key"
             value={editedDevice.sslKey}
             required

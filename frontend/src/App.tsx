@@ -8,11 +8,11 @@ import {
 import LoginPage from "./pages/LoginPage";
 import DeviceRegistration from "./pages/DeviceRegistration";
 import SurveySettings from "./pages/SurveySettings";
+import SurveyResponses from "./pages/SurveyResponses";
 import { ProtectedRoute } from "./components/protected-route";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/AuthProvider";
 import ConfigSettings from "./pages/Configuration";
-import TrialSelect from "./pages/TrialSelect";
 import { TrialRoutes } from "./pages/TrialRoutes";
 
 const AppRoutes: React.FC = () => {
@@ -27,23 +27,13 @@ const AppRoutes: React.FC = () => {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           {/* Trial selection route */}
-          <Route
-            path="/trials"
-            element={
-              <div className="max-w-[1400px] mx-auto w-full px-8 py-20">
-                <TrialSelect />
-              </div>
-            }
-          />
-
-          {/* Trial-specific routes */}
-          <Route path="/:trialId" element={<TrialRoutes />}>
+          <Route element={<TrialRoutes />}>
             <Route index element={<DeviceRegistration />} />
             <Route path="devices" element={<DeviceRegistration />} />
             <Route path="survey" element={<SurveySettings />} />
+            <Route path="responses" element={<SurveyResponses />} />
             <Route path="config" element={<ConfigSettings />} />
           </Route>
-
           {/* Redirects */}
           <Route path="/" element={<Navigate to="/trials" replace />} />
           <Route path="*" element={<Navigate to="/trials" replace />} />

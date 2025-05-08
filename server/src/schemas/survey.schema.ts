@@ -9,7 +9,6 @@ const surveyQuestionSchema = new Schema<SurveyQuestion>({
 });
 
 const surveySchema = new Schema<SurveyDocument>({
-  trialId: { type: Schema.Types.ObjectId, ref: "Trial", required: true },
   title: { type: String, required: true },
   questions: { type: [surveyQuestionSchema], required: true },
   videoLink: { type: String, required: true },
