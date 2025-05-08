@@ -1,5 +1,5 @@
 {
-  "name": "@deal-fuze/server",
+  "name": "@reminds/server",
   "private": true,
   "main": "./src/types/index.ts",
   "types": "./src/types/index.ts",

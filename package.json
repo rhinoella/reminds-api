@@ -1,5 +1,5 @@
 {
-  "name": "reminds-api",
+  "name": "reminds",
   "private": true,
   "workspaces": [
     "frontend",

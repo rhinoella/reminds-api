@@ -15,8 +15,6 @@ const appConfigSchema = new Schema<AppConfigDocument>({
   location: { type: String, required: true },
   clientId: { type: String, required: true },
   p12Password: { type: String, required: true },
-  sslCertificate: { type: String, required: true },
-  sslKey: { type: String, required: true },
 });
 
 export default model<AppConfigDocument>("AppConfig", appConfigSchema);

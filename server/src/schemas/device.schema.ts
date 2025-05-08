@@ -3,9 +3,12 @@ import { model, Schema } from "mongoose";
 
 const deviceSchema = new Schema<DeviceDocument>({
   trialId: { type: Schema.Types.ObjectId, ref: "Trial", required: true },
-  deviceId: { type: String, required: true },
+  deviceId: { type: String, required: true, unique: true },
   deviceType: { type: String, enum: DeviceType, required: true },
   status: { type: String, enum: DeviceStatus, required: true },
+  pharmacyLocation: { type: String, required: false },
+  sslCertificate: { type: String, required: true },
+  sslKey: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

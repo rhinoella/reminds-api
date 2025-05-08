@@ -57,6 +57,7 @@ async function fetchWithAuth<TResponse, TRequest>(
 
   if (!response.ok) {
     console.log(responseData);
+    console.log(responseData.message);
     throw new APIError(response.status, responseData.error, responseData);
   }
 

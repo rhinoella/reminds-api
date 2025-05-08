@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-full w-full flex-1">
+    <div className="flex flex-col justify-center items-center pt-[20%] w-full flex-1">
       <Card className="w-md mx-auto">
         <CardHeader className="flex justify-between items-end">
           <CardTitle>Login</CardTitle>
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" form="login-form">
+          <Button type="submit" form="login-form" onClick={() => handleSubmit}>
             Login
           </Button>
         </CardFooter>

@@ -6,3 +6,4 @@ package-lock.json
 package-lock.json
 app.log
 **/node_modules
+frontend/dist

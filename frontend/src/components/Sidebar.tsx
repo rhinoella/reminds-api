@@ -10,16 +10,21 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
 const menuItems = [
   {
     name: "Home",
     items: [
-      { name: "Dashboard", icon: LayoutDashboard, path: "/" },
-      { name: "Surveys", icon: FileText, path: "/surveys" },
-      { name: "Devices", icon: Tablet, path: "/devices" },
-      { name: "Configuration", icon: Settings, path: "/app-config" },
+      { name: "Dashboard", icon: LayoutDashboard, path: "/", useParams: true },
+      { name: "Survey", icon: FileText, path: "survey", useParams: true },
+      { name: "Devices", icon: Tablet, path: "devices", useParams: true },
+      {
+        name: "Configuration",
+        icon: Settings,
+        path: "config",
+        useParams: true,
+      },
     ],
   },
 ];
@@ -86,7 +91,7 @@ export default function Sidebar({ defaultCollapsed = true }: SidebarProps) {
               {section.items.map((item) => (
                 <RouterLink
                   key={item.path}
-                  to={item.path}
+                  to={item.useParams ? `${item.path}` : item.path}
                   className="flex items-center px-2 py-1.5 text-sm hover:bg-accent rounded-lg transition-all duration-200"
                 >
                   <item.icon className="h-4 w-4 flex-shrink-0" />

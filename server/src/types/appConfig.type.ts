@@ -15,8 +15,6 @@ export interface AppConfig {
   location: string;
   clientId: string;
   p12Password: string;
-  sslCertificate: string;
-  sslKey: string;
 }
 
 export interface AppConfigDocument extends AppConfig, Document {}
