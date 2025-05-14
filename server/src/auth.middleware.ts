@@ -37,10 +37,14 @@ export async function authMiddleware(
       const deviceId = authHeader.split(" ")[1];
       const device = await Device.findOne({ deviceId });
 
+      console.log(`Device: ${deviceId}`);
+
       if (!device) {
         res.status(401).json({ message: "Unauthorized" });
         return;
       }
+
+      req.query["deviceId"] = deviceId;
 
       next();
     }
